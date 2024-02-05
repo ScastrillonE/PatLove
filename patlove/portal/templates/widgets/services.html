@@ -1,0 +1,49 @@
+<!-- Section services -->
+<section id="services" class="cat-bg3">
+  <div class="container">
+    <div class="section-heading text-center">
+      <h2>Nuestros servicios</h2>
+    </div>
+    <!-- /Section-heading -->
+    <div class="container block-padding pt-0">
+      <div class="row">
+        <div class="col-xl-6">
+          <h3>{{ serviceSectionInfo.title }}</h3>
+          <p>{{ serviceSectionInfo.description }}</p>
+        </div>
+        <!-- /col-xl -->
+        <div class="col-xl-6">
+          <img src="{{ serviceSectionInfo.image.url }}" alt="" data-aos="fade-down" data-aos-duration="1500" class="img-fluid border-irregular1 border-double" />
+        </div>
+      </div>
+      <!-- /row -->
+    </div>
+    <!-- /container -->
+    <!-- services carousel -->
+    <div class="bg-light-custom block-padding border-irregular1">
+      <div id="owl-services" class="container owl-carousel owl-theme">
+        {% for service in services %}
+          <!-- service 1 -->
+          <div class="col-md-12">
+            <div class="serviceBox">
+              <!-- service icon -->
+              <div class="service-icon">
+                <i class="{{service.icon}}"></i>
+              </div>
+              <!-- service content -->
+              <div class="service-content">
+                <h6>{{service.title}}</h6>
+                <p>{{service.description}}</p>
+                {% comment %} <a class="btn btn-primary" href="services-single.html">read more</a> {% endcomment %}
+              </div>
+            </div>
+          </div>
+        {% endfor %}
+        <!-- col-md-12 -->
+      </div>
+      <!-- /owl-services -->
+    </div>
+    <!-- /bg-light-custom -->
+  </div>
+  <!-- /container -->
+</section>

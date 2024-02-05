@@ -50,7 +50,7 @@ DATABASE_ROUTERS = ("tenant_schemas.routers.TenantSyncRouter",)
 DATABASES = {"default": env.db("DATABASE_URL") }
 DATABASES["default"]["ENGINE"] = "tenant_schemas.postgresql_backend"
 DATABASES["default"]["ATOMIC_REQUESTS"] = True
-DEFAULT_FILE_STORAGE = 'tenant_schemas.storage.TenantFileSystemStorage'
+DEFAULT_FILE_STORAGE = 'patlove.manageMediaFiles.storage.TenantFileSystemStorage'
 # https://docs.djangoproject.com/en/stable/ref/settings/#std:setting-DEFAULT_AUTO_FIELD
 DEFAULT_AUTO_FIELD = "django.db.models.BigAutoField"
 
@@ -72,6 +72,8 @@ SHARED_APPS=[
 TENANT_APPS=[
     "patlove.foundation",
     "patlove.users",
+    "patlove.manageMediaFiles",
+    "solo",
     "django.contrib.auth",
     "django.contrib.sessions",
     "django.contrib.sites",
@@ -87,7 +89,12 @@ TENANT_APPS=[
     "allauth.account",
     "allauth.socialaccount",
     "django_celery_beat",
-]
+    "patlove.foundation",
+    "patlove.configuration",
+    "patlove.portal",
+    "patlove.rescuePet"
+    ]
+
 
 
 
@@ -95,7 +102,7 @@ TENANT_APPS=[
 INSTALLED_APPS = SHARED_APPS 
 INSTALLED_APPS += [tenant_app for tenant_app in TENANT_APPS if tenant_app not in INSTALLED_APPS]
 
-TENANT_MODEL = "foundation.Foundation" # app.Model
+TENANT_MODEL = "foundation.Tenant" # app.Model
 # MIGRATIONS
 # ------------------------------------------------------------------------------
 # https://docs.djangoproject.com/en/dev/ref/settings/#migration-modules
@@ -193,7 +200,6 @@ TEMPLATES = [
                 "django.template.context_processors.tz",
                 "django.contrib.messages.context_processors.messages",
                 "patlove.users.context_processors.allauth_settings",
-                "patlove.foundation.context_processors.tenant_name",
             ],
         },
     }

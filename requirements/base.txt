@@ -6,7 +6,6 @@ hiredis==2.3.2  # https://github.com/redis/hiredis-py
 celery==5.3.6  # pyup: < 6.0  # https://github.com/celery/celery
 django-celery-beat==2.5.0  # https://github.com/celery/django-celery-beat
 flower==2.0.1  # https://github.com/mher/flower
-
 # Django
 # ------------------------------------------------------------------------------
 django==4.2  # pyup: < 5.0  # https://www.djangoproject.com/
@@ -17,3 +16,4 @@ django-crispy-forms==2.1  # https://github.com/django-crispy-forms/django-crispy
 crispy-bootstrap5==2023.10  # https://github.com/django-crispy-forms/crispy-bootstrap5
 django-redis==5.4.0  # https://github.com/jazzband/django-redis
 django-tenant-schemas==1.12.0 # https://django-tenant-schemas.readthedocs.io/en/latest/install.html
+django-solo==2.2.0

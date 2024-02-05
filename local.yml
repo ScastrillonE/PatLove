@@ -1,93 +1,125 @@
 version: '3'
 
-volumes:
-  patlove_local_postgres_data: {}
-  patlove_local_postgres_data_backups: {}
-
 services:
-  django: &django
-    build:
-      context: .
-      dockerfile: ./compose/local/django/Dockerfile
-    image: patlove_local_django
-    container_name: patlove_local_django
-    depends_on:
-      - postgres
-      - redis
-      - mailpit
-    volumes:
-      - .:/app:z
-    env_file:
-      - ./.envs/.local/.django
-      - ./.envs/.local/.postgres
-    ports:
-      - '8000:8000'
-    command: /start
 
   postgres:
     build:
       context: .
       dockerfile: ./compose/production/postgres/Dockerfile
-    image: patlove_production_postgres
     container_name: patlove_local_postgres
+    env_file:
+      - ./.envs/.local/.postgres
+    image: patlove_production_postgres
     volumes:
       - patlove_local_postgres_data:/var/lib/postgresql/data
       - patlove_local_postgres_data_backups:/backups
-    env_file:
-      - ./.envs/.local/.postgres
-
-  docs:
-    image: patlove_local_docs
-    container_name: patlove_local_docs
-    build:
-      context: .
-      dockerfile: ./compose/local/docs/Dockerfile
-    env_file:
-      - ./.envs/.local/.django
-    volumes:
-      - ./docs:/docs:z
-      - ./config:/app/config:z
-      - ./patlove:/app/patlove:z
-    ports:
-      - '9000:9000'
-    command: /start-docs
-
-  mailpit:
-    image: axllent/mailpit:latest
-    container_name: patlove_local_mailpit
-    ports:
-      - "8025:8025"
-
-  redis:
-    image: redis:6
-    container_name: patlove_local_redis
-
-  celeryworker:
-    <<: *django
-    image: patlove_local_celeryworker
-    container_name: patlove_local_celeryworker
-    depends_on:
-      - redis
-      - postgres
-      - mailpit
-    ports: []
-    command: /start-celeryworker
+   
 
   celerybeat:
-    <<: *django
-    image: patlove_local_celerybeat
+    build: &ref_0
+      context: .
+      dockerfile: ./compose/local/django/Dockerfile
+    command: /start-celerybeat
     container_name: patlove_local_celerybeat
     depends_on:
       - redis
       - postgres
       - mailpit
+    env_file: &ref_1
+      - ./.envs/.local/.django
+      - ./.envs/.local/.postgres
+    image: patlove_local_celerybeat
     ports: []
-    command: /start-celerybeat
+    volumes: &ref_2
+      - .:/app:z
+ 
+
+  celeryworker:
+    build: *ref_0
+    command: /start-celeryworker
+    container_name: patlove_local_celeryworker
+    depends_on:
+      - redis
+      - postgres
+      - mailpit
+    env_file: *ref_1
+    image: patlove_local_celeryworker
+    ports: []
+    volumes: *ref_2
+
+
+  django:
+    build: *ref_0
+    command: /start
+    container_name: patlove_local_django
+    depends_on: &ref_3
+      - postgres
+      - redis
+      - mailpit
+    env_file: *ref_1
+    image: patlove_local_django
+
+    ports:
+      - '8000:8000'
+    volumes: *ref_2
+
+
+  docs:
+    build:
+      context: .
+      dockerfile: ./compose/local/docs/Dockerfile
+    command: /start-docs
+    container_name: patlove_local_docs
+    env_file:
+      - ./.envs/.local/.django
+    image: patlove_local_docs
+
+    ports:
+      - '9000:9000'
+    volumes:
+      - ./docs:/docs:z
+      - ./config:/app/config:z
+      - ./patlove:/app/patlove:z
 
   flower:
-    <<: *django
-    image: patlove_local_flower
+    build: *ref_0
+    command: /start-flower
     container_name: patlove_local_flower
+    depends_on: *ref_3
+    env_file: *ref_1
+    image: patlove_local_flower
+
     ports:
       - '5555:5555'
-    command: /start-flower
+    volumes: *ref_2
+
+
+  mailpit:
+    container_name: patlove_local_mailpit
+    image: axllent/mailpit:latest
+
+    ports:
+      - '8025:8025'
+
+  pgadmin:
+    container_name: patlove_local_pgadmin
+    depends_on:
+      - postgres
+    env_file:
+      - ./.envs/.local/.pgadmin
+    image: dpage/pgadmin4
+
+    ports:
+      - '5050:80'
+    volumes:
+      - patlove_pgadmin_data:/var/lib/pgadmin
+
+
+  redis:
+    container_name: patlove_local_redis
+    image: redis:6
+
+volumes:
+  patlove_local_postgres_data: {}
+  patlove_local_postgres_data_backups: {}
+  patlove_pgadmin_data: {}

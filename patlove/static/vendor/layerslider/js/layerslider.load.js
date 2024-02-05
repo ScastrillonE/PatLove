@@ -9,7 +9,7 @@ $(document).ready(function () {
             layersContainer: 1280,
             skin: 'outline',
             hoverPrevNext: true,
-            skinsPath: './vendor/layerslider/skins/',
+            skinsPath: 'static/vendor/layerslider/skins/',
             autoStart: true,
 			autoPlayVideos : false
         });

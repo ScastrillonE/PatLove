@@ -3,7 +3,6 @@ from django.conf.urls.static import static
 from django.contrib import admin
 from django.urls import include, path
 from django.views import defaults as default_views
-from django.views.generic import TemplateView
 
 urlpatterns = [
     # Django Admin, use {% url 'admin:index' %}
@@ -12,7 +11,8 @@ urlpatterns = [
     path("users/", include("patlove.users.urls", namespace="users")),
     path("accounts/", include("allauth.urls")),
     # Your stuff: custom urls includes go here
-    path("",include("patlove.foundation.urls"),name="foundations")
+    path("",include("patlove.portal.urls"),name="portal"),
+    path("adopt/",include("patlove.rescuePet.urls"),name="rescuepet")
 ] + static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)
 
 

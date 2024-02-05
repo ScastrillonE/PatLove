@@ -1,0 +1,97 @@
+{% extends 'core/base.html' %}
+
+{% block content %}
+  <div class="page">
+    <div class="container">
+      <div class="row">
+        <div class="col-lg-12">
+          <div class="row bg-light-custom border-irregular1 block-padding">
+            <!-- image -->
+            <div class="col-lg-4 offset-lg-2">
+              <!-- owl slider -->
+              <div id="owl-adopt-single" class="owl-carousel top-centered-nav owl-theme">
+               {% if pet.rescuePetPhoto.all|length > 1%}
+               {% for photo in pet.rescuePetPhoto.all %}
+                <div class="col-md-12">
+                  <!-- image -->
+                  <a href="{{ photo.image.url }}" title="{{pet.name}}"><img src="{{ photo.image.url }}" class="border-irregular1 img-fluid hover-opacity" alt="" /></a>
+                </div>
+                <!-- /col-md-12 -->
+                {% endfor %}
+                {% else %}
+                <div class="col-md-12">
+                  <!-- image -->
+                  <a href="{{ pet.rescuePetPhoto.first.image.url }}" title="{{pet.name}}"><img src="{{ pet.rescuePetPhoto.first.image.url }}" class="border-irregular1 img-fluid hover-opacity" alt="" /></a>
+                </div>
+                <!-- /col-md-12 -->
+                {% endif %}
+               
+              </div>
+              <!-- /owl-carousel -->
+            </div>
+            <!-- /col-md -->
+            <!-- adoption info -->
+            <div class="col-lg-4 res-margin mt-5 text-xs-center">
+              <h4><strong>Pet name:</strong> {{pet.name}}</h4>
+              <div class="row">
+                <div class="col-sm-6">
+                  <ul class="list-unstyled pet-adopt-info">
+                    <li class="h7">
+                      Gender: <span>{{pet.get_gender_display|capfirst}}</span>
+                    </li>
+                    <li class="h7">
+                      Age: <span>{{pet.get_age_display|capfirst}} </span>
+                    </li>
+                    <li class="h7">
+                      Size: <span>{{pet.get_size_display|capfirst}}</span>
+                    </li>
+                  </ul>
+                </div>
+                <div class="col-sm-6">
+                  <ul class="list-unstyled pet-adopt-info">
+                    <li class="h7">
+                      Neutered: <span>{{pet.neutered}}</span>
+                    </li>
+                    <li class="h7">
+                      Vaccinated: <span>{{pet.vaccinated}}</span>
+                    </li>
+                    
+                  </ul>
+                </div>
+                <!-- /div -->
+              </div>
+              <!-- /row -->
+              {% comment %} <p class="font-weight-bold">Fluffy is a very sweet and active dog, she is ready for a new home!</p> {% endcomment %}
+              <!-- button -->
+              <a href="#" class="btn btn-primary" data-aos="zoom-in">Adopt now!</a>
+            </div>
+            <!-- /col-md -->
+          </div>
+          <!-- /row -->
+          <div class="col-md-12 mt-5">
+            <h3>About {{pet.name}}</h3>
+            <!-- ul custom -->
+            {% comment %} <ul class="custom list-inline font-weight-bold">
+              <li class="list-inline-item">Friendly to other dogs</li>
+              <li class="list-inline-item">Good for Apartments</li>
+              <li class="list-inline-item">Friendly with Kids</li>
+            </ul> {% endcomment %}
+            <p>{{pet.about}}</p>
+            <div class="alert alert-primary mt-5" role="alert">
+              <h6 class="text-light">Adoption Rules</h6>
+              <p>Elit uasi quidem minus id omnis a nibh fusce mollis imperdie tlorem ipuset phas ellus ac sodales Lorem ipsum dolor Phas ellus ac sodales felis tiam non metus. lorem ipsum dolor sit amet, consectetur adipisicing elit uasi quidem minus id omnis a nibh fusce mollis imperdie tlorem ipuset campas fincas</p>
+            </div>
+            <!-- /alert -->
+            <p class="custom-link">
+              <a href="adoption.html">« Go back to adoption gallery</a>
+            </p>
+          </div>
+          <!-- /col-md -->
+        </div>
+        <!-- /col-lg -->
+      </div>
+      <!-- /row -->
+    </div>
+    <!-- /container -->
+  </div>
+{% endblock %}
